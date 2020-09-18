@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use prefix;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -14,7 +14,16 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+
     protected $namespace = 'App\Http\Controllers';
+
+    /**
+     * the path to the "home" route for your application.
+     *
+     * @var string
+     */
+    public const HOME ='/home';
+    public const ADMIN ='/admin';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -39,6 +48,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapSiteRoutes();
+
+        $this->mapAdminRoutes();
+
         //
     }
 
@@ -53,7 +66,37 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('web')
              ->namespace($this->namespace)
+            ->prefix('admin')  // دي بتحوط كلمة admin في كل صفحة ليا قبل اي user   في url .
              ->group(base_path('routes/web.php'));
+    }
+
+    /**
+     * Define the "site" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapSiteRoutes()
+    {
+        Route::middleware('web')
+             ->namespace($this->namespace)
+             ->group(base_path('routes/site.php'));
+    }
+
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::middleware('web')
+             ->namespace($this->namespace)
+             ->prefix('admin')
+             ->group(base_path('routes/admin.php'));
     }
 
     /**

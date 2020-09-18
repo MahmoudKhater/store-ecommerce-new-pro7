@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('tesst', function () {
+    return view('layouts.admin');
 });
